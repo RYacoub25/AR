@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AR Switch & Socket Try-On</title>
+    <!-- 1) model-viewer library -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #viewer {
+            flex: 1;
+        }
+
+        #controls {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 2) The AR viewer -->
+    <model-viewer id="viewer" src="models/Unica.glb" ios-src="models/switch.usdz" ar ar-modes="webxr quick-look"
+        camera-controls auto-rotate style="width:100%; height:100%; background-color:#eee;">
+    </model-viewer>
+
+    <!-- 3) Simple UI for picking models -->
+    <div id="controls">
+        <button data-glb="switch.glb" data-usdz="switch.usdz">Switch</button>
+        <button data-glb="socket.glb" data-usdz="socket.usdz">Socket</button>
+        <!-- add more buttons as needed -->
+    </div>
+
+    <script>
+        // 4) Hook up the buttons to swap the model
+        const viewer = document.querySelector('#viewer');
+        document.querySelectorAll('#controls button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const glb = btn.getAttribute('data-glb');
+                const usdz = btn.getAttribute('data-usdz');
+                viewer.setAttribute('src', `models/${glb}`);
+                viewer.setAttribute('ios-src', `models/${usdz}`);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
